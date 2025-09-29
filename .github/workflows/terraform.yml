@@ -1,0 +1,61 @@
+name: Terraform
+
+on:
+  pull_request:
+    branches: [ "master" ]
+  push:
+    branches: [ "master" ]
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    env:
+      AWS_REGION: us-east-1
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform Init
+        working-directory: terraform
+        run: terraform init -input=false
+
+      - name: Terraform Validate
+        working-directory: terraform
+        run: terraform validate
+
+      - name: Terraform Plan
+        if: github.event_name == 'pull_request'
+        working-directory: terraform
+        run: |
+          terraform plan -input=false \
+            -var aws_region=${{ env.AWS_REGION }} \
+            -var vpc_id=${{ secrets.VPC_ID }} \
+            -var 'private_subnet_ids=${{ secrets.PRIVATE_SUBNET_IDS }}' \
+            -var db_username=${{ secrets.DB_USERNAME }} \
+            -var db_password=${{ secrets.DB_PASSWORD }} \
+            -var temporary_allowed_cidr='${{ secrets.TEMP_CIDR }}'
+
+      - name: Terraform Apply
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        working-directory: terraform
+        run: |
+          terraform apply -input=false -auto-approve \
+            -var aws_region=${{ env.AWS_REGION }} \
+            -var vpc_id=${{ secrets.VPC_ID }} \
+            -var 'private_subnet_ids=${{ secrets.PRIVATE_SUBNET_IDS }}' \
+            -var db_username=${{ secrets.DB_USERNAME }} \
+            -var db_password=${{ secrets.DB_PASSWORD }} \
+            -var temporary_allowed_cidr='${{ secrets.TEMP_CIDR }}'
