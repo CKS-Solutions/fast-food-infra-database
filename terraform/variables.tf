@@ -4,14 +4,16 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-variable "vpc_id" {
-  description = "VPC onde o RDS ficará"
+variable "vpc_name" {
+  description = "Nome da VPC"
   type        = string
+  default     = "fast-food-vpc"
 }
 
-variable "private_subnet_ids" {
-  description = "Subnets privadas onde o RDS ficará"
-  type        = list(string)
+variable "subnet_name" {
+  description = "Nome da subnet privada"
+  type        = string
+  default     = "fast-food-private-subnet"
 }
 
 variable "allowed_security_group_ids" {
@@ -46,7 +48,7 @@ variable "db_password" {
 variable "db_instance_class" {
   description = "Classe da instância RDS"
   type        = string
-  default     = "db.t4g.small"
+  default     = "db.t3.micro"
 }
 
 variable "allocated_storage" {
@@ -64,29 +66,29 @@ variable "max_allocated_storage" {
 variable "multi_az" {
   description = "Ativar Multi-AZ (produção)"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "backup_retention_period" {
   description = "Dias de retenção de backup"
   type        = number
-  default     = 7
+  default     = 0
 }
 
 variable "deletion_protection" {
   description = "Proteção contra deleção (recomendado true em produção)"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "skip_final_snapshot" {
   description = "Pular snapshot final ao destruir (false em prod)"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "enable_performance_insights" {
   description = "Habilitar Performance Insights"
   type        = bool
-  default     = true
+  default     = false
 }

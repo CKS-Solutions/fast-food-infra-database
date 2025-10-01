@@ -1,18 +1,18 @@
 resource "aws_db_subnet_group" "this" {
-  name       = "rds-private-subnets"
-  subnet_ids = var.private_subnet_ids
+  name       = "fast-food-rds-private-subnets"
+  subnet_ids = data.aws_subnets.fast-food-private-subnet.ids
   tags = {
-    Name = "rds-private-subnets"
+    Name = "fast-food-rds-private-subnets"
   }
 }
 
 resource "aws_security_group" "rds" {
-  name        = "sg-rds-postgres"
+  name        = "fast-food-rds-postgres"
   description = "Acesso ao RDS Postgres (5432) somente de SGs autorizados"
-  vpc_id      = var.vpc_id
+  vpc_id      = data.aws_vpc.fast-food-vpc.id
 
   egress {
-    description = "Saída irrestrita"
+    description = "Saida irrestrita"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -21,7 +21,7 @@ resource "aws_security_group" "rds" {
   }
 
   tags = {
-    Name = "sg-rds-postgres"
+    Name = "fast-food-rds-postgres"
   }
 }
 
@@ -44,5 +44,5 @@ resource "aws_security_group_rule" "inbound_temp_cidr" {
   protocol          = "tcp"
   security_group_id = aws_security_group.rds.id
   cidr_blocks       = [var.temporary_allowed_cidr]
-  description       = "Acesso temporário por CIDR"
+  description       = "Acesso temporario por CIDR"
 }
