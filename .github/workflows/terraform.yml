@@ -25,7 +25,8 @@ jobs:
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Terraform Init
@@ -42,20 +43,14 @@ jobs:
         run: |
           terraform plan -input=false \
             -var aws_region=${{ env.AWS_REGION }} \
-            -var vpc_id=${{ secrets.VPC_ID }} \
-            -var 'private_subnet_ids=${{ secrets.PRIVATE_SUBNET_IDS }}' \
             -var db_username=${{ secrets.DB_USERNAME }} \
-            -var db_password=${{ secrets.DB_PASSWORD }} \
-            -var temporary_allowed_cidr='${{ secrets.TEMP_CIDR }}'
+            -var db_password=${{ secrets.DB_PASSWORD }}
 
       - name: Terraform Apply
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         working-directory: terraform
         run: |
           terraform apply -input=false -auto-approve \
             -var aws_region=${{ env.AWS_REGION }} \
-            -var vpc_id=${{ secrets.VPC_ID }} \
-            -var 'private_subnet_ids=${{ secrets.PRIVATE_SUBNET_IDS }}' \
             -var db_username=${{ secrets.DB_USERNAME }} \
-            -var db_password=${{ secrets.DB_PASSWORD }} \
-            -var temporary_allowed_cidr='${{ secrets.TEMP_CIDR }}'
+            -var db_password=${{ secrets.DB_PASSWORD }}
