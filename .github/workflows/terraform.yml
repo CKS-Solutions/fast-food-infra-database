@@ -9,6 +9,7 @@ on:
 jobs:
   terraform:
     runs-on: ubuntu-latest
+    environment: fast-food-infra-database-env
 
     permissions:
       contents: read
