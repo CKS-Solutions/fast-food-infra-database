@@ -11,3 +11,10 @@ data "aws_vpc" "fast-food-vpc" {
     values = [var.vpc_name]
   }
 }
+
+data "aws_security_group" "eks_nodes" {
+  filter {
+    name   = "tag:Name"
+    values = ["fast-food-eks-nodes"]
+  }
+}

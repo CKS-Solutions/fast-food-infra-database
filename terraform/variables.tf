@@ -16,18 +16,6 @@ variable "subnet_name" {
   default     = "fast-food-private-subnet"
 }
 
-variable "allowed_security_group_ids" {
-  description = "Security Groups autorizados a acessar o RDS (porta 5432)"
-  type        = list(string)
-  default     = []
-}
-
-variable "temporary_allowed_cidr" {
-  description = "CIDR temporário para acesso (ex: 203.0.113.10/32). Deixe vazio para desabilitar."
-  type        = string
-  default     = ""
-}
-
 variable "db_name" {
   description = "Nome do database inicial"
   type        = string
@@ -91,4 +79,10 @@ variable "enable_performance_insights" {
   description = "Habilitar Performance Insights"
   type        = bool
   default     = false
+}
+
+variable "db_port" {
+  description = "Porta de acesso ao banco"
+  type        = number
+  default     = 5432
 }

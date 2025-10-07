@@ -25,24 +25,12 @@ resource "aws_security_group" "rds" {
   }
 }
 
-resource "aws_security_group_rule" "inbound_from_sg" {
-  for_each                 = toset(var.allowed_security_group_ids)
+resource "aws_security_group_rule" "inbound_eks_nodes" {
   type                     = "ingress"
-  from_port                = 5432
-  to_port                  = 5432
+  from_port                = var.db_port
+  to_port                  = var.db_port
   protocol                 = "tcp"
   security_group_id        = aws_security_group.rds.id
-  source_security_group_id = each.value
-  description              = "Acesso Postgres 5432 do SG ${each.value}"
-}
-
-resource "aws_security_group_rule" "inbound_temp_cidr" {
-  count             = length(var.temporary_allowed_cidr) > 0 ? 1 : 0
-  type              = "ingress"
-  from_port         = 5432
-  to_port           = 5432
-  protocol          = "tcp"
-  security_group_id = aws_security_group.rds.id
-  cidr_blocks       = [var.temporary_allowed_cidr]
-  description       = "Acesso temporario por CIDR"
+  source_security_group_id = data.aws_security_group.eks_nodes.id
+  description              = "Acesso Postgres ${var.db_port} do SG ${data.aws_security_group.eks_nodes.name}"
 }
