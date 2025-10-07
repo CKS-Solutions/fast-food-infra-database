@@ -12,8 +12,3 @@ output "db_name" {
   description = "Database name"
   value       = var.db_name
 }
-
-output "rds_security_group_id" {
-  description = "SG do RDS (para referência cruzada)"
-  value       = aws_security_group.rds.id
-}
