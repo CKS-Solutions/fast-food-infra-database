@@ -18,3 +18,10 @@ data "aws_security_group" "eks_nodes" {
     values = ["fast-food-eks-nodes"]
   }
 }
+
+data "aws_security_group" "rds" {
+  filter {
+    name   = "tag:Name"
+    values = ["fast-food-rds-postgres"]
+  }
+}

@@ -23,7 +23,7 @@ resource "aws_db_instance" "postgres" {
   port                         = var.db_port
 
   db_subnet_group_name         = aws_db_subnet_group.this.name
-  vpc_security_group_ids       = [aws_security_group.rds.id]
+  vpc_security_group_ids       = [data.aws_security_group.rds.id]
   parameter_group_name         = aws_db_parameter_group.pg15.name
 
   backup_retention_period      = var.backup_retention_period
