@@ -19,7 +19,7 @@ resource "aws_db_instance" "postgres" {
 
   multi_az                     = var.multi_az
 
-  publicly_accessible          = false
+  publicly_accessible          = true
   port                         = var.db_port
 
   db_subnet_group_name         = aws_db_subnet_group.this.name

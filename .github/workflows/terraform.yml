@@ -1,6 +1,7 @@
 name: Terraform
 
 on:
+  workflow_dispatch:
   pull_request:
     branches: [ "master" ]
   push:
@@ -41,17 +42,9 @@ jobs:
       - name: Terraform Plan
         if: github.event_name == 'pull_request'
         working-directory: terraform
-        run: |
-          terraform plan -input=false \
-            -var aws_region=${{ env.AWS_REGION }} \
-            -var db_username=${{ secrets.DB_USERNAME }} \
-            -var db_password=${{ secrets.DB_PASSWORD }}
+        run: terraform plan -input=false -var="aws_region=${{ env.AWS_REGION }}" -var="db_username=${{ secrets.RDS_USERNAME }}" -var="db_password=${{ secrets.RDS_PASSWORD }}"
 
       - name: Terraform Apply
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         working-directory: terraform
-        run: |
-          terraform apply -input=false -auto-approve \
-            -var aws_region=${{ env.AWS_REGION }} \
-            -var db_username=${{ secrets.DB_USERNAME }} \
-            -var db_password=${{ secrets.DB_PASSWORD }}
+        run: terraform apply -input=false -auto-approve -var="aws_region=${{ env.AWS_REGION }}" -var="db_username=${{ secrets.RDS_USERNAME }}" -var="db_password=${{ secrets.RDS_PASSWORD }}"
