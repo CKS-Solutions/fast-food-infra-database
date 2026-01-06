@@ -13,16 +13,10 @@ data "aws_vpc" "fast-food-vpc" {
 }
 
 data "aws_security_group" "eks_nodes" {
+  count = var.eks_security_group_name != null ? 1 : 0
   filter {
     name   = "tag:Name"
-    values = ["fast-food-eks-nodes"]
-  }
-}
-
-data "aws_security_group" "rds" {
-  filter {
-    name   = "tag:Name"
-    values = ["fast-food-rds-postgres"]
+    values = [var.eks_security_group_name]
   }
 }
 

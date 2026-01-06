@@ -92,3 +92,9 @@ variable "lambda_security_group_name" {
   type        = string
   default     = null
 }
+
+variable "eks_security_group_name" {
+  description = "Nome do Security Group do EKS (opcional, se não fornecido a regra de acesso do EKS não será criada)"
+  type        = string
+  default     = null
+}

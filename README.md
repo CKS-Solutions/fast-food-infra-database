@@ -4,8 +4,8 @@ Provisiona um RDS Postgres 15 **privado**, acessível **apenas** por SGs autoriz
 
 ## Pré-requisitos
 - Backend remoto configurado (S3 + DynamoDB)
-- Já existir uma VPC e subnets privadas
-- Security Groups existentes: `fast-food-rds-postgres` e `fast-food-eks-nodes`
+- Já existir uma VPC e subnets privadas com as tags corretas
+- Security Group do EKS (opcional): se `eks_security_group_name` for fornecido, o Security Group deve existir
 
 ## Variables obrigatórias
 - `db_username`
@@ -27,6 +27,7 @@ Provisiona um RDS Postgres 15 **privado**, acessível **apenas** por SGs autoriz
 - `skip_final_snapshot` (default: `true`)
 - `enable_performance_insights` (default: `false`)
 - `lambda_security_group_name` (default: `null`) - Nome do Security Group das lambdas. Se não fornecido, será criado um novo com o nome `fast-food-lambda-sg`
+- `eks_security_group_name` (default: `null`) - Nome do Security Group do EKS. Se não fornecido, a regra de acesso do EKS não será criada
 
 ## Comandos
 
