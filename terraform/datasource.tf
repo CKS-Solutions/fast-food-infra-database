@@ -25,3 +25,11 @@ data "aws_security_group" "rds" {
     values = ["fast-food-rds-postgres"]
   }
 }
+
+data "aws_security_group" "lambda" {
+  count = var.lambda_security_group_name != null ? 1 : 0
+  filter {
+    name   = "tag:Name"
+    values = [var.lambda_security_group_name]
+  }
+}

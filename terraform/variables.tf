@@ -86,3 +86,9 @@ variable "db_port" {
   type        = number
   default     = 5432
 }
+
+variable "lambda_security_group_name" {
+  description = "Nome do Security Group das lambdas (opcional, se não fornecido será criado um novo)"
+  type        = string
+  default     = null
+}
