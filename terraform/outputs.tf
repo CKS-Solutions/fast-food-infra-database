@@ -23,7 +23,7 @@ output "vpc_id" {
   value       = data.aws_vpc.fast-food-vpc.id
 }
 
-output "private_subnet_ids" {
-  description = "IDs das subnets privadas"
-  value       = data.aws_subnets.fast-food-private-subnet.ids
+output "public_subnet_ids" {
+  description = "IDs das subnets públicas"
+  value       = data.aws_subnets.fast-food-public-subnet.ids
 }

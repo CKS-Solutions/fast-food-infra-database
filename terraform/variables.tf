@@ -11,9 +11,9 @@ variable "vpc_name" {
 }
 
 variable "subnet_name" {
-  description = "Nome da subnet privada"
+  description = "Nome da subnet pública"
   type        = string
-  default     = "fast-food-private-subnet"
+  default     = "fast-food-public-subnet"
 }
 
 variable "db_name" {
@@ -89,12 +89,6 @@ variable "db_port" {
 
 variable "lambda_security_group_name" {
   description = "Nome do Security Group das lambdas (opcional, se não fornecido será criado um novo)"
-  type        = string
-  default     = null
-}
-
-variable "eks_security_group_name" {
-  description = "Nome do Security Group do EKS (opcional, se não fornecido a regra de acesso do EKS não será criada)"
   type        = string
   default     = null
 }
